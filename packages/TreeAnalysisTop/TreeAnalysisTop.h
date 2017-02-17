@@ -207,6 +207,8 @@ class TreeAnalysisTop : public PAFChainItemSelector
   Int_t   ngenLep;
   Int_t   ngenLepFromTau;
   Int_t   nJet;
+  Int_t   nJet_jecUp;
+  Int_t   nJet_jecDown;
   Float_t genWeight;
   Float_t LepGood_px[30];
   Float_t LepGood_py[30];
@@ -227,6 +229,18 @@ class TreeAnalysisTop : public PAFChainItemSelector
   Float_t Jet_energy[50];
   Float_t Jet_eta[50];
   Float_t Jet_btagCSV[50];
+  Float_t Jet_jecUp_px[50];
+  Float_t Jet_jecUp_py[50];
+  Float_t Jet_jecUp_pz[50];
+  Float_t Jet_jecUp_energy[50];
+  Float_t Jet_jecUp_eta[50];
+  Float_t Jet_jecUp_btagCSV[50];
+  Float_t Jet_jecDown_px[50];
+  Float_t Jet_jecDown_py[50];
+  Float_t Jet_jecDown_pz[50];
+  Float_t Jet_jecDown_energy[50];
+  Float_t Jet_jecDown_eta[50];
+  Float_t Jet_jecDown_btagCSV[50];
   Float_t genLep_pt[50];
   Float_t genLep_eta[50];
   Float_t genLep_phi[50];
@@ -269,6 +283,7 @@ class TreeAnalysisTop : public PAFChainItemSelector
   float getDPhiClosestJet(TLorentzVector);
   //  int   getNBTagsMed();
   void  setMET(float);
+  void  setMETPhi(float);
   float getMET();
   float getMETPhi();
   //float getMT(int, gChannel);
