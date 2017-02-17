@@ -46,9 +46,13 @@ enum iCut{
   i1btag, 
   iExact1btag,
   iExact2btag,
+  i1Jets1B,
+  i2Jets1B,
+  i2Jets2B,
   iNCUTS
 };
-const TString sCut[iNCUTS] = {"dilepton", "ZVeto", "MET", "2jets", "1btag","Exact1btag","Exact2btag"};
+const TString sCut[iNCUTS] = {"dilepton", "ZVeto", "MET", "2jets", "1btag","Exact1btag","Exact2btag","1Jet1B","2Jets1B","2Jets2B"};
+
 enum gSystFlag{
   Norm,
   BtagUp,
@@ -292,6 +296,36 @@ class TreeAnalysisTop : public PAFChainItemSelector
   float getDPhiLepMet();
   float getDPhibMet();
 
+  Double_t getDilepMETJetPt();
+  Double_t getLep1METJetPt();
+  Double_t getDilepPt();        
+  Double_t getPtSys(TLorentzVector*, int);
+  Double_t getDPtDilep_JetMET();
+  Double_t getDPtDilep_MET();
+  Double_t getDPtLep1_Jet1();
+  Double_t getDPtLep1_MET();
+  Double_t getDeltaPt(vector<TLorentzVector>, vector<TLorentzVector>);
+  Double_t getDeltaRDilep_METJets12();
+  Double_t getDeltaRDilep_Jets12();
+  Double_t getDeltaRLep1_Jet1();
+  Double_t getDeltaR(vector<TLorentzVector>, vector<TLorentzVector>);
+  Double_t getM_L1J1();
+  Double_t getM_L1J2();
+  Double_t getM_L2J1();
+  Double_t getM_L2J2();
+  Double_t getM_L2J1J2();
+  Double_t getM(vector<TLorentzVector>);
+
+  
+
+
+
+
+
+  
+
+
+
   TLorentzVector getPtllb();
 
   bool METFilter();
@@ -478,7 +512,27 @@ class TreeAnalysisTop : public PAFChainItemSelector
   TH2F* fHChi0StopMass[gNCHANNELS][iNCUTS];
   TH1F* fHvertices[gNCHANNELS][iNCUTS];
   TH1F* fHgoodvertices[gNCHANNELS][iNCUTS];
-	TH1F* fnGenLep[gNCHANNELS][iNCUTS];
+  TH1F* fnGenLep[gNCHANNELS][iNCUTS];
+
+  // tW
+  TH1F* fHDilepMETJetPt        [gNCHANNELS][iNCUTS];
+  TH1F* fHLep1METJetPt 	       [gNCHANNELS][iNCUTS];
+  TH1F* fHDilepPt      	       [gNCHANNELS][iNCUTS];
+  TH1F* fHDPtDilep_JetMET      [gNCHANNELS][iNCUTS];
+  TH1F* fHDPtDilep_MET         [gNCHANNELS][iNCUTS];
+  TH1F* fHDPtLep1_Jet1         [gNCHANNELS][iNCUTS];
+  TH1F* fHDPtLep1_MET          [gNCHANNELS][iNCUTS];
+  TH1F* fHDeltaRDilep_METJets12[gNCHANNELS][iNCUTS];
+  TH1F* fHDeltaRDilep_Jets12   [gNCHANNELS][iNCUTS];
+  TH1F* fHDeltaRLep1_Jet1      [gNCHANNELS][iNCUTS];
+  TH1F* fHM_L1J1    	       [gNCHANNELS][iNCUTS];
+  TH1F* fHM_L1J2  	       [gNCHANNELS][iNCUTS];
+  TH1F* fHM_L2J1  	       [gNCHANNELS][iNCUTS];
+  TH1F* fHM_L2J2  	       [gNCHANNELS][iNCUTS];
+  TH1F* fHM_L2J1J2             [gNCHANNELS][iNCUTS];
+  TH1F* fHFitVariable          [gNSYST];
+
+
   
   //++ Gen Info
   TH1F* fHDeltaRLepJet[gNCHANNELS-1];

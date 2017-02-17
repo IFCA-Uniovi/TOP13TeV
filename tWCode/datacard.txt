@@ -1,0 +1,36 @@
+imax *
+jmax *
+kmax *
+---------------
+shapes * * shapes.root $PROCESS $PROCESS_$SYSTEMATIC
+---------------
+bin 1
+observation 98096.236328
+------------------------------
+bin         1	1	1	1	1	
+process     TW	TTbar	TTV	VV	DY	
+process     0	1	2	3	4	
+rate        9384.528	98096.238	94.630	350.500	862.005	
+------------------------------
+Btag	 shape 	1	1	1	1	1	
+MisTag	 shape 	1	1	1	1	1	
+#JES	 shape 	1	1	1	1	1	
+#JER	 shape 	1	1	1	1	1	
+LES	 shape 	1	1	1	1	1	
+PU	 shape 	1	1	1	1	1	
+#TopPt	 shape 	1	1	1	1	1	
+Stat_1TW	 shape 	1	0	0	0	0	
+Stat_2TW	 shape 	1	0	0	0	0	
+Stat_3TW	 shape 	1	0	0	0	0	
+Stat_1TTbar	 shape 	0	1	0	0	0	
+Stat_2TTbar	 shape 	0	1	0	0	0	
+Stat_3TTbar	 shape 	0	1	0	0	0	
+Stat_1TTV	 shape 	0	0	1	0	0	
+Stat_2TTV	 shape 	0	0	1	0	0	
+Stat_3TTV	 shape 	0	0	1	0	0	
+Stat_1VV	 shape 	0	0	0	1	0	
+Stat_2VV	 shape 	0	0	0	1	0	
+Stat_3VV	 shape 	0	0	0	1	0	
+Stat_1DY	 shape 	0	0	0	0	1	
+Stat_2DY	 shape 	0	0	0	0	1	
+Stat_3DY	 shape 	0	0	0	0	1	
