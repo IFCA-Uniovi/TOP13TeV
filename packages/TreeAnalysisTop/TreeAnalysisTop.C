@@ -44,8 +44,6 @@ void TreeAnalysisTop::GetParameters(){
 void TreeAnalysisTop::GetTreeVariables(){
   nLepGood             = Get<Int_t>("nLepGood");
   nJet                 = Get<Int_t>("nJet");
-  nJet_jecUp           = Get<Int_t>("nJet_jecUp");
-  nJet_jecDown         = Get<Int_t>("nJet_jecDown");
 
   if(!gIsData){
     ngenLep              = Get<Int_t>("ngenLep");
@@ -86,22 +84,6 @@ void TreeAnalysisTop::GetTreeVariables(){
     }
     for(int k = 0; k<ngenLepFromTau; k++){
       genLepFromTau_pdgId[k]    = TMath::Abs(Get<Int_t>("genLepFromTau_pdgId", k));
-    }
-    for(int k = 0; k<nJet_jecUp; k++){
-      Jet_jecUp_px[k]          = Get<Float_t>("Jet_jecUp_px", k);
-      Jet_jecUp_py[k]          = Get<Float_t>("Jet_jecUp_py", k);
-      Jet_jecUp_pz[k]          = Get<Float_t>("Jet_jecUp_pz", k);
-      Jet_jecUp_energy[k]      = Get<Float_t>("Jet_jecUp_energy", k);
-      Jet_jecUp_eta[k]         = Get<Float_t>("Jet_jecUp_eta", k);
-      Jet_jecUp_btagCSV[k]     = Get<Float_t>("Jet_jecUp_btagCSV", k);
-    }
-    for(int k = 0; k<nJet_jecDown; k++){
-      Jet_jecDown_px[k]          = Get<Float_t>("Jet_jecDown_px", k);
-      Jet_jecDown_py[k]          = Get<Float_t>("Jet_jecDown_py", k);
-      Jet_jecDown_pz[k]          = Get<Float_t>("Jet_jecDown_pz", k);
-      Jet_jecDown_energy[k]      = Get<Float_t>("Jet_jecDown_energy", k);
-      Jet_jecDown_eta[k]         = Get<Float_t>("Jet_jecDown_eta", k);
-      Jet_jecDown_btagCSV[k]     = Get<Float_t>("Jet_jecDown_btagCSV", k);
     }
   }
 }
@@ -2615,30 +2597,17 @@ void TreeAnalysisTop::SmearJetPts(int flag){
       // Gen info for jets... 
       genJet.SetPxPyPzE(Get<Float_t>("Jet_mcPx",*it), Get<Float_t>("Jet_mcPy",*it), Get<Float_t>("Jet_mcPz",*it), Get<Float_t>("Jet_mcEnergy",*it));        
       ojets += tmp;
-      if(flag == 1) JetPt.at(*it) = Get<Float_t>("Jet_rawPt",*it)*Get<Float_t>("Jet_corr_JECUp",*it)*Get<Float_t>("Jet_corr_JER",*it); // vary up   for flag 1 
-      if(flag == 2) JetPt.at(*it) = Get<Float_t>("Jet_rawPt",*it)*Get<Float_t>("Jet_corr_JECDown",*it)*Get<Float_t>("Jet_corr_JER",*it); // vary down for flag 2;
-      //if(flag == 3) JetPt.at(*it) *= Get<Float_t>("Jet_corr_JERUp", *it);    // smear for flag 3 
+      //if(flag == 1) JetPt.at(*it) = Get<Float_t>("Jet_jecUp_pt", *it)  * Get<Float_t>("Jet_corr_JER",*it); // vary up   for flag 1
+      //if(flag == 2) JetPt.at(*it) = Get<Float_t>("Jet_jecDown_pt", *it)  * Get<Float_t>("Jet_corr_JER",*it); // vary up   for flag 1
+      if(flag == 1) JetPt.at(*it) = Get<Float_t>("Jet_rawPt",*it)*Get<Float_t>("Jet_corr_JECUp",*it); // jer not available yet *Get<Float_t>("Jet_corr_JER",*it); // vary up   for flag 1 
+      if(flag == 2) JetPt.at(*it) = Get<Float_t>("Jet_rawPt",*it)*Get<Float_t>("Jet_corr_JECDown",*it); // jer not available yet *Get<Float_t>("Jet_corr_JER",*it); // vary down for flag 2;
+      if(flag == 3) JetPt.at(*it) *= Get<Float_t>("Jet_corr_JERUp", *it);    // smear for flag 3 
       // set tmp to the scaled/smeared jet
       tmp.SetPtEtaPhiE(JetPt.at(*it), Jet_eta[*it], JetPhi.at(*it), Jet_energy[*it]);
       jets += tmp;  // add scaled/smeared jet to the new jets
     }
-    if (flag == 1){
-      setMET(Get<Float_t>("met_jecUp_pt")); //met
-      setMETPhi(Get<Float_t>("met_jecUp_phi")); //met phi
-    }
-    else if (flag == 2){
-      cout << "Getting jec down" << endl;
-      setMET(Get<Float_t>("met_jecDown_pt")); //met
-      setMETPhi(Get<Float_t>("met_jecDown_phi")); //met phi
-      cout << "done " << endl;
-    }
-    else{
-      setMET(Get<Float_t>("met_pt")); //met
-      setMETPhi(Get<Float_t>("met_phi")); //met phi
-    }
-
+    propagateMET(jets, ojets);  // propagate this change to the MET
   }
-  cout << "Done smearing" << endl;
 }
 
 void TreeAnalysisTop::ScaleLeptons(int flag){
