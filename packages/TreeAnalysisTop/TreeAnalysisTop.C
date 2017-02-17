@@ -251,6 +251,7 @@ void TreeAnalysisTop::Initialise() {
   fHDummy = CreateH1F("fHDummy","",1,0,1);
   fHFidu = CreateH1F("YieldFidu","",1,0,1);
   fHWeightsFidu  = CreateH1F("hPDFweightsFidu","hPDFweightsFidu", nWeights, -0.5, nWeights - 0.5);
+
   //PAF_INFO("TreeAnalysisTop", "+ Initialise Yield histograms...");
   InitialiseYieldsHistos();
   //PAF_INFO("TreeAnalysisTop", "+ Initialise Kinematic histograms...");
@@ -261,7 +262,6 @@ void TreeAnalysisTop::Initialise() {
   }
   //PAF_INFO("TreeAnalysisTop", "+ Initialise other histograms...");
   fHTopPtWeight  = CreateH1F("H_TopPtWeight" ,"TopPt Weight",100, 0, 2);
-
   fHnGenEle  = CreateH1F("fHnGenEle" , "nGenPromptElecs"  , 11, -1.5, 9.5);
   fHnGenMuo  = CreateH1F("fHnGenMuo" , "nGenPromptMuons"  , 11, -1.5, 9.5);
   fHGenElePt = CreateH1F("fHGenElePt", "GenPromptElecs Pt", 500, 0, 500);
@@ -281,19 +281,18 @@ void TreeAnalysisTop::Initialise() {
       gSampleName == "TTbar_Powheg"    ||  
       gSampleName == "TTJets_aMCatNLO"  ||  
       gSampleName == "TTbar_Powheg_Pythia6")  {  
+
     //	PAF_INFO("TreeAnalysisTop", "+ Initialise Drell-Yan histograms...");
+
     InitialiseDYHistos();
   }
   PAF_INFO("TreeAnalysisTop", "+ Initialise histograms for systematics studies...");
   InitialiseSystematicHistos();
 
-  //	PU Reweight
-  //--------------------------------------
-  //PAF_INFO("TreeAnalysisTop", "+ Initialise Pile-Up reweighting tool...");
-  fPUWeight     = new PUWeight(gLumiForPU, Spring2016_25ns_poisson_OOTPU, "2016_ichep"); 
+  fPUWeight     = new PUWeight(gLumiForPU, Moriond17MC_PoissonOOTPU, "2016_Moriond17"); 
   if (!gIsData) {
-    fPUWeightUp   = new PUWeight(18494.9, Spring2016_25ns_poisson_OOTPU, "2016_ichep"); //  18494.9 
-    fPUWeightDown = new PUWeight(20441.7, Spring2016_25ns_poisson_OOTPU, "2016_ichep"); //  20441.7 
+    fPUWeightUp   = new PUWeight(18494.9, Moriond17MC_PoissonOOTPU, "2016_Moriond17"); //  18494.9 
+    fPUWeightDown = new PUWeight(20441.7, Moriond17MC_PoissonOOTPU, "2016_Moriond17"); //  20441.7 
   }
 
   //if (gUseCSVM) fBTagSF   = new BTagSFUtil("CSVM","ABCD");//ReReco
