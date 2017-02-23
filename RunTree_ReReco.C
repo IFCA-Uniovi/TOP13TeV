@@ -52,7 +52,7 @@ void RunTree_ReReco(TString  sampleName     = "TTbar_Madgraph",
   TString userhome = "/mnt_pool/fanae105/user/$USER/";
   DatasetManager* dm = DatasetManager::GetInstance();
   //dm->SetTab("DR80XasymptoticMiniAODv2");
-  dm->SetTab("DR80XSummer16asymptoticMiniAODv2");
+  dm->SetTab("DR80XSummer16asymptoticMiniAODv2_2");
   //dm->RedownloadFiles();
 
   // Deal with data samples
@@ -63,15 +63,25 @@ void RunTree_ReReco(TString  sampleName     = "TTbar_Madgraph",
        sampleName == "SingleMu")) {
     cout << "   + Data..." << endl;
     
+    // TString datasuffix[] = {
+    //   "Run2016B_PromptReco_v2",
+    //   "Run2016C_PromptReco_v2",
+    //   "Run2016D_PromptReco_v2"
+    //   //"Run2015C_05Oct",
+    //   //"C_7016",
+    //   //"D_7360"
+    // };
     TString datasuffix[] = {
-      "Run2016B_PromptReco_v2",
-      "Run2016C_PromptReco_v2",
-      "Run2016D_PromptReco_v2"
-      //"Run2015C_05Oct",
-      //"C_7016",
-      //"D_7360"
-    };
-    const unsigned int nDataSamples = 3;
+      "16B_03Feb2017",
+      "16C_03Feb2017",
+      "16D_03Feb2017",
+      "16E_03Feb2017",
+      "16F_03Feb2017",
+      "16G_03Feb2017",
+      "16H_03Feb2017_v2",
+      "16H_03Feb2017_v3" 
+    };                 
+    const unsigned int nDataSamples = 8;
     for(unsigned int i = 0; i < nDataSamples; i++) {
       TString asample = Form("Tree_%s_%s",sampleName.Data(), datasuffix[i].Data());
       cout << "   + Looking for " << asample << " trees..." << endl;
@@ -85,31 +95,37 @@ void RunTree_ReReco(TString  sampleName     = "TTbar_Madgraph",
     dm->LoadDataset(sampleName);
     if(sampleName != "TestHeppy")   myProject->AddDataFiles(dm->GetFiles());
     if(sampleName == "WJetsToLNu_aMCatNLO" || 
-	    sampleName == "DYJetsToLL_M10to50_aMCatNLO_ext" || 
-	    sampleName == "DYJetsToLL_M50_aMCatNLO" || 
-	    sampleName == "TTJets_amcatnlo" ||
-	    sampleName == "TTWToLNu"  || 
-	    sampleName == "TTWToQQ" || 
-	    sampleName == "TTZToQQ" || 
-	    sampleName == "WWZ" || 
-	    sampleName == "WZZ" || 
-			sampleName == "ZZZ" ||
-			sampleName.Contains("aMCatNLO") ||
-			sampleName.Contains("amcatnlo") ){
-			G_Event_Weight = dm->GetCrossSection() / dm->GetSumWeights();
-
-			cout << endl;
+       sampleName == "DYJetsToLL_M10to50_aMCatNLO_ext" || 
+       sampleName == "DYJetsToLL_M50_aMCatNLO" || 
+       sampleName == "TTJets_amcatnlo" ||
+       sampleName == "TTWToLNu"  || 
+       sampleName == "TTWToQQ" || 
+       sampleName == "TTZToQQ" || 
+       sampleName == "WWZ" || 
+       sampleName == "WZZ" || 
+       sampleName == "ZZZ" ||
+       sampleName == "TTWToLNu_ext2"   ||
+       sampleName == "TTWToQQ"		||
+       sampleName == "TTZToLLNuNu_ext"	||
+       sampleName == "TTZToLLNuNu_ext2" |
+       sampleName == "TTZToQQ"		||
+       sampleName == "TTGJets"		||
+       sampleName == "TTGJets_ext"     ||
+       sampleName.Contains("aMCatNLO") ||
+       sampleName.Contains("amcatnlo") ){
+      G_Event_Weight = dm->GetCrossSection() / dm->GetSumWeights();
+      cout << endl;
       cout << " weightSum(MC@NLO) = " << dm->GetSumWeights()     << endl;
     }
     else if(sampleName == "TestHeppy"){
-			TString localpath="/pool/ciencias/users/user/palencia/";
-			TString sample = "treeTtbar_jan19.root";
-			myProject->AddDataFile(localpath + sample);
-			G_Event_Weight = 1;
-		}
-		else {       
-			G_Event_Weight = dm->GetCrossSection() / dm->GetEventsInTheSample();
-		}
+      TString localpath="/pool/ciencias/users/user/palencia/";
+      TString sample = "treeTtbar_jan19.root";
+      myProject->AddDataFile(localpath + sample);
+      G_Event_Weight = 1;
+    }
+    else {       
+      G_Event_Weight = dm->GetCrossSection() / dm->GetEventsInTheSample();
+    }
     
     if(nEvents == 0) nEvents = dm->GetEventsInTheSample();
 

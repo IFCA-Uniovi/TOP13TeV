@@ -472,13 +472,13 @@ void TreeAnalysisTop::InitialiseKinematicHistos(){
 
 
       // tW histograms
-      fHDilepMETJetPt[ch][cut] = CreateH1F("H_DilepMETJetPt_"+gChanLabel[ch]+"_"+sCut[cut], "DilepMETJetPt",   50,0.0, 400.0);
+      fHDilepMETJetPt[ch][cut] = CreateH1F("H_DilepMETJetPt_"+gChanLabel[ch]+"_"+sCut[cut], "DilepMETJetPt",   50,0.0, 200.0);
       fHLep1METJetPt [ch][cut] = CreateH1F("H_Lep1METJetPt_"+gChanLabel[ch]+"_"+sCut[cut], "Lep1METJetPt ",   50,0.0, 400.0);
-      fHDilepPt      [ch][cut] = CreateH1F("H_DilepPt_"      +gChanLabel[ch]+"_"+sCut[cut], "DilepPt      ",   50,0.0, 400.0);
+      fHDilepPt      [ch][cut] = CreateH1F("H_DilepPt_"      +gChanLabel[ch]+"_"+sCut[cut], "DilepPt      ",   50,0.0, 200.0);
       fHDPtDilep_JetMET[ch][cut] = CreateH1F("H_DPtDilep_JetMET_"+gChanLabel[ch]+"_"+sCut[cut], "DPtDilep_JetMET",   50,0.0, 400.0);
-      fHDPtDilep_MET	 [ch][cut] = CreateH1F("H_DPtDilep_MET_"	+gChanLabel[ch]+"_"+sCut[cut], "DPtDilep_MET",   50,0.0, 400.0);
-      fHDPtLep1_Jet1	 [ch][cut] = CreateH1F("H_DPtLep1_Jet1_"	+gChanLabel[ch]+"_"+sCut[cut], "DPtLep1_Jet1",   50,0.0, 400.0);
-      fHDPtLep1_MET    [ch][cut] = CreateH1F("H_DPtLep1_MET_"    +gChanLabel[ch]+"_"+sCut[cut], "DPtLep1_MET",   50,0.0, 400.0);
+      fHDPtDilep_MET	 [ch][cut] = CreateH1F("H_DPtDilep_MET_"	+gChanLabel[ch]+"_"+sCut[cut], "DPtDilep_MET",   50,0.0, 300.0);
+      fHDPtLep1_Jet1	 [ch][cut] = CreateH1F("H_DPtLep1_Jet1_"	+gChanLabel[ch]+"_"+sCut[cut], "DPtLep1_Jet1",   50,0.0, 300.0);
+      fHDPtLep1_MET    [ch][cut] = CreateH1F("H_DPtLep1_MET_"    +gChanLabel[ch]+"_"+sCut[cut], "DPtLep1_MET",   50,0.0, 300.0);
       fHDeltaRDilep_METJets12[ch][cut] = CreateH1F("H_DeltaRDilep_METJets12_"+gChanLabel[ch]+"_"+sCut[cut], "DeltaRDilep_METJets12",   50,0.0, 5.0);
       fHDeltaRDilep_Jets12   [ch][cut] = CreateH1F("H_DeltaRDilep_Jets12_"+gChanLabel[ch]+"_"+sCut[cut], "DeltaRDilep_Jets12   ",   50,0.0, 5.0);
       fHDeltaRLep1_Jet1      [ch][cut] = CreateH1F("H_DeltaRLep1_Jet1_"+gChanLabel[ch]+"_"+sCut[cut], "DeltaRLep1_Jet1      ",   50,0.0, 5.0);
@@ -878,7 +878,6 @@ void TreeAnalysisTop::InsideLoop() {
   gSysSource = PUUp;
   SetEventObjects();
   FillYields(PUUp);
-  
   ResetOriginalObjects();
   if (!gIsData)
     PUSF = fPUWeightDown->GetWeight(Get<Float_t>("nTrueInt")); //nTruePU
@@ -1636,6 +1635,10 @@ void TreeAnalysisTop::FillYieldsHistograms(gChannel chan, iCut cut, gSystFlag sy
       }
       fHminDelRJetsLeps[chan][cut][sys]->Fill(TMath::Min(deltaR_temp1, deltaR_temp2), EventWeight);
     }
+    // if (chan == ElMu && cut == iDilepton && sys == Norm) cout << getNJets() << " ";
+    // if (chan == ElMu && cut == iDilepton && sys == JESUp) cout << getNJets() << " ";
+    // if (chan == ElMu && cut == iDilepton && sys == JESDown) cout << getNJets() << endl;
+    
     fHNJets[chan][cut][sys]       ->Fill(getNJets(), EventWeight);
     fHNBtagJets[chan][cut][sys]   ->Fill(getNBTags(), EventWeight);
     fHJet0Pt[chan][cut][sys]      ->Fill(getJetPtIndex(0), EventWeight);
@@ -1643,6 +1646,17 @@ void TreeAnalysisTop::FillYieldsHistograms(gChannel chan, iCut cut, gSystFlag sy
     fHDiLepPt[chan][cut][sys]     ->Fill((fHypLepton1.p+fHypLepton2.p).Pt(), EventWeight);
     fHLep0Pt[chan][cut][sys]      ->Fill(fHypLepton1.p.Pt(), EventWeight);
     fHLep1Pt[chan][cut][sys]      ->Fill(fHypLepton2.p.Pt(), EventWeight); 
+
+    if (cut == iDilepton && chan == ElMu){
+      int njets  = getNJets();
+      int nbtags = getNBTags();
+      if (njets == 1 && nbtags == 1)
+	fHFitVariable[sys]->Fill(1.,EventWeight);
+      else if (njets ==2 && nbtags == 1)
+      fHFitVariable[sys]->Fill(2.,EventWeight);
+      else if (njets == 2 && nbtags == 2)
+	fHFitVariable[sys]->Fill(3.,EventWeight);
+    }
   }
 
   if (!gIsData){
@@ -1650,16 +1664,6 @@ void TreeAnalysisTop::FillYieldsHistograms(gChannel chan, iCut cut, gSystFlag sy
     fHTrigSys[chan][cut]->Fill(getTriggerError(chan),EventWeight);
   }
 
-  if (cut == iDilepton && chan == ElMu){
-    int njets  = getNJets();
-    int nbtags = getNBTags();
-    if (njets == 1 && nbtags == 1)
-      fHFitVariable[sys]->Fill(1.,EventWeight);
-    else if (njets ==2 && nbtags == 1)
-      fHFitVariable[sys]->Fill(2.,EventWeight);
-    else if (njets == 2 && nbtags == 2)
-      fHFitVariable[sys]->Fill(3.,EventWeight);
-  }
 
 #ifdef DEBUG
   cout << " DONE! " << endl;

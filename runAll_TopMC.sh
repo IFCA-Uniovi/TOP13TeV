@@ -14,21 +14,24 @@ source /opt/PAF/PAF_setup.sh
 resetpaf
 
 #root -l -b -q 'RunTree_ReReco.C("TestHeppy", 1, 0, 0, true)'
-root -l -b -q 'RunTree_ReReco.C("TTbar_Powheg", 50, 0, true)'
-root -l -b -q 'RunTree_ReReco.C("WJetsToLNu_aMCatNLO"    ,  15, 0, true)'
-root -l -b -q 'RunTree_ReReco.C("ZZ_ext"   , 15, 0, true)'
-root -l -b -q 'RunTree_ReReco.C("WW_ext"   , 15, 0, true)'
-root -l -b -q 'RunTree_ReReco.C("WZ_ext"   , 15, 0, true)'
-root -l -b -q 'RunTree_ReReco.C("TW_ext"   , 30, 0, true)'
-root -l -b -q 'RunTree_ReReco.C("TbarW_ext", 30, 0, true)'
+root -l -b -q 'RunTree_ReReco.C("TTbar_Powheg", 50, 0, true)' #
+root -l -b -q 'RunTree_ReReco.C("WJetsToLNu_MLM"    ,  15, 0, true)' #
+root -l -b -q 'RunTree_ReReco.C("ZZ_ext"   , 15, 0, true)' #
+root -l -b -q 'RunTree_ReReco.C("WW_ext"   , 15, 0, true)' #
+root -l -b -q 'RunTree_ReReco.C("WZ_ext"   , 15, 0, true)' #
+root -l -b -q 'RunTree_ReReco.C("TW_ext"   , 30, 0, true)' #
+root -l -b -q 'RunTree_ReReco.C("TbarW_ext", 30, 0, true)' #
+root -l -b -q 'RunTree_ReReco.C("TW_noFullyHadr"   , 30, 0, true)' #
+root -l -b -q 'RunTree_ReReco.C("TbarW_noFullyHadr", 30, 0, true)' #
 #
 resetpaf -a
 root -l -b -q 'RunTree_ReReco.C("TTWToLNu_ext2"    , 15, 0, true)'
 root -l -b -q 'RunTree_ReReco.C("TTZToQQ"   , 15, 0, true)'
 root -l -b -q 'RunTree_ReReco.C("TTZToLLNuNu_ext", 15, 0, true)'
+#root -l -b -q 'RunTree_ReReco.C("TTZToLLNuNu_ext2", 15, 0, true)'
 root -l -b -q 'RunTree_ReReco.C("TTWToQQ"   , 15, 0, true)'
 
-#root -l -b -q 'RunTree_ReReco.C("TTGJets"   , 5, 0, true)'
+root -l -b -q 'RunTree_ReReco.C("TTGJets"   , 5, 0, true)'
 
 resetpaf -a
 root -l -b -q 'RunTree_ReReco.C("MuonEG"    , 40, 0, true)'
